@@ -40,7 +40,7 @@ names(activity_data_sum) <- c("Date", "Total_Steps")
 
 Plot the histogram, which exhibits the frequency number of steps taken per day. Set number of breaks, n=30 to represent the number of days / month.
 
-```{r histogram_with_NAs, echo=FALSE, cache=TRUE, fig.path="./figure/"}
+```{r histogram_with_NAs, echo=TRUE, cache=TRUE, fig.path="./figure/"}
 hist(activity_data_sum$Total_Steps, col="blue", breaks=30, main="Frequency of Total Steps", xlab="Total Steps")
 ```
 
@@ -139,7 +139,7 @@ head(imputed_activity_data_sum, n=20)
 ```
 
 Here is the new histogram with the imputed data.
-```{r histogram_without_NAs, echo=FALSE, cache=TRUE,fig.path="./figure/"}
+```{r histogram_without_NAs, echo=TRUE, cache=TRUE,fig.path="./figure/"}
       
 hist(imputed_activity_data_sum$Total_Steps, col="red", breaks=30, main="Frequency of Total Steps", xlab="Total Steps")
 ```
@@ -157,7 +157,7 @@ imputed_activity <- (activity_data %>% group_by(Weekdays, interval)
 ## Are there differences in activity patterns between weekdays and weekends?
 Plot the imputed_activity table and display the results based on the Weekday/Weekend. 
 
-```{r weekdays_activity, echo=FALSE, cache=TRUE, fig.path="./figure/"}
+```{r weekdays_activity, echo=TRUE, cache=TRUE, fig.path="./figure/"}
 p <- ggplot(imputed_activity, aes(x=as.numeric(interval), y=avgStepsPerInterval)) +
      facet_grid(Weekdays~.) + geom_line(colour="blue") +
      xlab("Interval Time")  + ylab("Average Steps Per Interval")
