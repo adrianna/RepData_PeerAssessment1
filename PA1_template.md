@@ -40,8 +40,9 @@ names(activity_data_sum) <- c("Date", "Total_Steps")
 
 Plot the histogram, which exhibits the frequency number of steps taken per day. Set number of breaks, n=30 to represent the number of days / month.
 
-```{r histogram_with_NAs, echo=TRUE, cache=TRUE}
-hist(activity_data_sum$Total_Steps, col="blue", breaks=30, main="Frequency of Total Steps", xlab="Total Steps")
+```{r}
+hist(activity_data_sum$Total_Steps, col="blue", breaks=30, 
+     main="Frequency of Total Steps", xlab="Total Steps")
 ```
 
 
@@ -69,7 +70,7 @@ interval column. To accomplish this:
        4. Group by interval, select the columns - step, date, interval - and calculate the average number of steps per 
           interval. This will generate a table with all the average steps taken per interval time. 
                  
-```{r, cache=TRUE}
+```{r}
 
 activity_data_save <- activity_data
 activity_data$interval <- str_pad(activity_data$interval, width=4, side="left", pad = "0")
@@ -134,14 +135,15 @@ names(imputed_activity_data_sum) <- c("Date", "Total_Steps")
 ```
 
 Here is a table of the imputed data:
-``` {r, echo=FALSE}
+``` {r }
 head(imputed_activity_data_sum, n=20)
 ```
 
 Here is the new histogram with the imputed data.
 
-```{r histogram_without_NAs, echo=TRUE, cache=TRUE}      
-hist(imputed_activity_data_sum$Total_Steps, col="red", breaks=30, main="Frequency of Total Steps", xlab="Total Steps")
+```{r}      
+hist(imputed_activity_data_sum$Total_Steps, col="red", breaks=30,
+     main="Frequency of Total Steps", xlab="Total Steps")
 ```
 
 Create a new column to indicate Weekday/Weekend. This will allow calculating the average steps per Interval grouped by weekday/weekend.
@@ -158,7 +160,7 @@ imputed_activity <- (activity_data %>% group_by(Weekdays, interval)
 
 Plot the imputed_activity table and display the results based on the Weekday/Weekend. 
 
-```{r weekdays_activity, echo=TRUE, cache=TRUE}
+```{r}
 p <- ggplot(imputed_activity, aes(x=as.numeric(interval), y=avgStepsPerInterval)) +
      facet_grid(Weekdays~.) + geom_line(colour="blue") +
      xlab("Interval Time")  + ylab("Average Steps Per Interval")
