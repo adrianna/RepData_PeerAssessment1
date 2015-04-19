@@ -2,8 +2,7 @@
 title: "Reproducible Research: Peer Assessment 1"
 author: "Adrianna G."
 date: "Tuesday, April 07, 2015"
-output: 
-html_document: "PA1_template.html" 
+output: html_document 
 keep_md: true
 ---
 ```{r load_packages, include=FALSE}
@@ -11,6 +10,7 @@ library(lubridate)
 library(dplyr)
 library(stringr)
 library(ggplot2)
+library(xtable)
 ```
 ## Loading and preprocessing the data
 
@@ -131,6 +131,11 @@ imputed_activity_data_sum <- as.data.frame(imputed_activity_data_sum)
 imputed_activity_data_sum <- cbind(as.Date(rownames(imputed_activity_data_sum)), imputed_activity_data_sum)
 rownames(imputed_activity_data_sum) <- seq(1,nrow(imputed_activity_data_sum))
 names(imputed_activity_data_sum) <- c("Date", "Total_Steps")
+```
+
+Here is a table of the imputed data:
+``` {r, echo=FALSE}
+head(imputed_activity_data_sum, n=20)
 ```
 
 Here is the new histogram with the imputed data.
