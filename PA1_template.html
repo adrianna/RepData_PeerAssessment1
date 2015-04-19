@@ -135,6 +135,7 @@ imputed_activity_data_sum &lt;- cbind(as.Date(rownames(imputed_activity_data_sum
 rownames(imputed_activity_data_sum) &lt;- seq(1,nrow(imputed_activity_data_sum))
 names(imputed_activity_data_sum) &lt;- c(&quot;Date&quot;, &quot;Total_Steps&quot;)</code></pre>
 <p>Here is a table of the imputed data:</p>
+<pre class="r"><code>head(imputed_activity_data_sum, n=20)</code></pre>
 <pre><code>##          Date Total_Steps
 ## 1  2012-10-01       10766
 ## 2  2012-10-02         126
