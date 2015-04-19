@@ -140,7 +140,7 @@ head(imputed_activity_data_sum, n=20)
 
 Here is the new histogram with the imputed data.
 
-```{r histogram_without_NAs, echo=TRUE, cache=TRUE,fig.path="./figure/"}      
+```{r histogram_without_NAs, echo=TRUE, cache=TRUE}      
 hist(imputed_activity_data_sum$Total_Steps, col="red", breaks=30, main="Frequency of Total Steps", xlab="Total Steps")
 ```
 
