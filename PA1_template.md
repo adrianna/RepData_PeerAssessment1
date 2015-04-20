@@ -5,16 +5,9 @@ date: "Tuesday, April 07, 2015"
 output: html_document 
 keep_md: true
 ---
-```{r global_options, include=FALSE}
-```
 
-```{r load_packages, include=FALSE}
-library(lubridate)
-library(dplyr)
-library(stringr)
-library(ggplot2)
-library(xtable)
-```
+
+
 ## Loading and preprocessing the data
 
 The data for this assignment can be downloaded from this website.
@@ -27,11 +20,13 @@ To load the data
         2. Unzip the file. File should be called "activity.csv".
         3. Read in the data in R, and store into object called activity_data
   
+
 ```r
 activity_data <- read.csv("activity.csv")
 ```
 
 Compute sum total of steps per day, taking into account the NAs. Transform data into data.frame for histogram plot. 
+
 
 ```r
 activity_data_sum <- with(activity_data, tapply(steps, date, sum,    na.rm=F))
@@ -43,24 +38,23 @@ names(activity_data_sum) <- c("Date", "Total_Steps")
 
 Plot the histogram, which exhibits the frequency number of steps taken per day. Set number of breaks, n=30 to represent the number of days / month.
 
+
 ```r
 hist(activity_data_sum$Total_Steps, col="blue", breaks=30, 
      main="Frequency of Total Steps", xlab="Total Steps")
 ```
 
-![plot of Frequency of Total Steps - Missing Data](figure/histogram_with_NAs-1.png) 
+![plot of chunk unnamed-chunk-3](./PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+
 
 ## What is mean total number of steps taken per day?
 The mean/median total number of steps taken per day is calculated by
 
-```r
-mean_steps   <- round(as.numeric(with(activity_data_sum, mean(Total_Steps, na.rm=T))))
-median_steps <- round(as.numeric(with(activity_data_sum, median(Total_Steps, na.rm=T))))
-```
 
-The mean total number of steps taken per day is ```r round(mean_steps)`
 
-The median total number of steps taken per day is ```r round(median_steps)`.
+The mean total number of steps taken per day is 1.0766 &times; 10<sup>4</sup>
+
+The median total number of steps taken per day is 1.0765 &times; 10<sup>4</sup>.
 
 ## What is the average daily activity pattern?
 
@@ -74,8 +68,8 @@ interval column. To accomplish this:
        4. Group by interval, select the columns - step, date, interval - and calculate the average number of steps per 
           interval. This will generate a table with all the average steps taken per interval time. 
                  
-```r
 
+```r
 activity_data_save <- activity_data
 activity_data$interval <- str_pad(activity_data$interval, width=4, side="left", pad = "0")
 
@@ -83,13 +77,14 @@ activity_data <- (activity_data %>% mutate(Date_Time=ymd_hm(paste(date,interval)
 num_of_missing_steps <- nrow(activity_data[is.na(activity_data$steps),])
 ```
 
-The number of missing steps is `r num_of_missing_steps`.
+The number of missing steps is 2304.
 
 
 ## Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 Finally, create a new table, called activity, which contains the average number of steps taken per interval. This is 
 accomplished by: 
+
 ```r
 activity <- (activity_data %>% group_by(interval)
                            %>% select(steps, date, interval) 
@@ -97,17 +92,15 @@ activity <- (activity_data %>% group_by(interval)
 ```
 
 
-```r
-maxStepsPerInterval = activity[which.max(activity$avgStepsPerInterval),]$interval
-maxStepsPerInterval
-```
-The interval with maximum average number of steps is `r maxStepsPerInterval` with average number of steps at
-`r round(activity[which.max(activity$avgStepsPerInterval),]$avgStepsPerInterval)`.
+
+The interval with maximum average number of steps is 0835 with average number of steps at
+206.
 
 
 ## Imputing missing values
 
 To impute missing values, scan the data for "NA" steps, and replace the missing data with the calculated average steps per interval, as computed above.
+
 
 ```r
  for (r in c(1:nrow(activity_data)) ) {
@@ -119,6 +112,7 @@ To impute missing values, scan the data for "NA" steps, and replace the missing 
 ```
 
 Compute the daily total steps and calculate the mean/median.
+
 ```r
 imputed_activity_data_sum <- round(with(activity_data, tapply(steps, date, sum,    na.rm=F)))
 
@@ -128,10 +122,18 @@ imputed_medianSteps <- median(imputed_activity_data_sum)
 
 ```r
 imputed_meanSteps
+```
+
+[1] 10766.16
+
+```r
 imputed_medianSteps
 ```
 
+[1] 10766
+
 Convert the table into a data.frame for the histogram plots.
+
 ```r
 imputed_activity_data_sum <- as.data.frame(imputed_activity_data_sum)
 imputed_activity_data_sum <- cbind(as.Date(rownames(imputed_activity_data_sum)), imputed_activity_data_sum)
@@ -140,8 +142,33 @@ names(imputed_activity_data_sum) <- c("Date", "Total_Steps")
 ```
 
 Here is a table of the imputed data:
+
 ```r
 head(imputed_activity_data_sum, n=20)
+```
+
+```
+##          Date Total_Steps
+## 1  2012-10-01       10766
+## 2  2012-10-02         126
+## 3  2012-10-03       11352
+## 4  2012-10-04       12116
+## 5  2012-10-05       13294
+## 6  2012-10-06       15420
+## 7  2012-10-07       11015
+## 8  2012-10-08       10766
+## 9  2012-10-09       12811
+## 10 2012-10-10        9900
+## 11 2012-10-11       10304
+## 12 2012-10-12       17382
+## 13 2012-10-13       12426
+## 14 2012-10-14       15098
+## 15 2012-10-15       10139
+## 16 2012-10-16       15084
+## 17 2012-10-17       13452
+## 18 2012-10-18       10056
+## 19 2012-10-19       11829
+## 20 2012-10-20       10395
 ```
 
 Here is the new histogram with the imputed data.
@@ -152,10 +179,10 @@ hist(imputed_activity_data_sum$Total_Steps, col="red", breaks=30,
      main="Frequency of Total Steps", xlab="Total Steps")
 ```
 
-
-![plot of Frequency of Total Steps](./figure/histogram_without_NAs-1.png)
+![plot of chunk unnamed-chunk-13](./PA1_template_files/figure-html/unnamed-chunk-13-1.png) 
 
 Create a new column to indicate Weekday/Weekend. This will allow calculating the average steps per Interval grouped by weekday/weekend.
+
 ```r
 activity_data <- (activity_data %>% mutate(Day=weekdays(Date_Time)))
 activity_data <- (activity_data %>% mutate(Weekdays=ifelse( (Day %in% c("Saturday", "Sunday")), "WEEKEND", "WEEKDAY")))
@@ -169,13 +196,16 @@ imputed_activity <- (activity_data %>% group_by(Weekdays, interval)
 
 Plot the imputed_activity table and display the results based on the Weekday/Weekend. 
 
+
 ```r
 p <- ggplot(imputed_activity, aes(x=as.numeric(interval), y=avgStepsPerInterval)) +
      facet_grid(Weekdays~.) + geom_line(colour="blue") +
      xlab("Interval Time")  + ylab("Average Steps Per Interval")
+p
 ```
 
-![plot of Weekday Activity](./figure/weekdays_activity-1.png)
+![plot of chunk unnamed-chunk-15](./PA1_template_files/figure-html/unnamed-chunk-15-1.png) 
+
 
 ## Conclusion
 
